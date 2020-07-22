@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, SafeAreaView } from 'react-native';
 import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import Lista from './src/Lista/Lista';
 
@@ -14,7 +14,7 @@ export default function App() {
       imgPerfil: "https://cdn.pixabay.com/photo/2016/02/11/16/59/dog-1194083_1280.jpg",
       imgPublicacao: "https://cdn.pixabay.com/photo/2020/07/03/16/51/sunrise-5367028_960_720.jpg",
       likeada: false,
-      likes: 0,
+      likes: 40,
     },
     {
       id: "2",
@@ -23,7 +23,7 @@ export default function App() {
       imgPerfil: "https://cdn.pixabay.com/photo/2020/05/17/20/21/cat-5183427_1280.jpg",
       imgPublicacao: "https://cdn.pixabay.com/photo/2020/07/01/23/50/thistle-5361303_960_720.jpg",
       likeada: true,
-      likes: 3,
+      likes: 1,
     },
     {
       id: "3",
@@ -41,23 +41,25 @@ export default function App() {
 
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header} >
-        <TouchableOpacity>
-          <Image source={require("./src/logo.png")} style={styles.logo} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Image source={require("./src/send.png")} style={styles.send} />
-        </TouchableOpacity>
-      </View>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={feed}
-        keyExtractor={(key) => key.id}
-        renderItem={(item) => <Lista dataItem={item} />}
-      />
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <View style={styles.header} >
+          <TouchableOpacity>
+            <Image source={require("./src/logo.png")} style={styles.logo} />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Image source={require("./src/send.png")} style={styles.send} />
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={feed}
+          keyExtractor={(key) => key.id}
+          renderItem={(item) => <Lista dataItem={item} />}
+        />
 
-    </View>
+      </View>
+    </SafeAreaView>
   );
 }
 
@@ -65,6 +67,9 @@ export default function App() {
 
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',

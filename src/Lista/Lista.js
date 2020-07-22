@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -6,7 +6,55 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Lista = ({ dataItem }) => {
 
-    const [feed, setFeed] = useState(dataItem)
+    const [feed, setFeed] = useState(dataItem);
+
+    const mostralikes = (likes) => {
+
+        if (feed.item.likes <= 0) {
+            return;
+        }
+
+        return (
+            <Text style={styles
+                .likes}>
+                {feed.item.likes} {feed.item.likes > 1 ? 'curtidas' : 'curtida'}
+            </Text>
+        );
+
+    }
+    const like = () => {
+        let feedTemp = feed.item;
+        console.log(feedTemp.nome);
+
+        if (feedTemp.likeada == true) {
+            setFeed({
+                item: {
+                    ...feedTemp,
+                    likeada: false, likes: feed.item.likes - 1,
+
+                }
+            });
+            console.log(feed);
+        } else {
+            setFeed({
+                item: {
+                    ...feedTemp,
+                    likeada: true, likes: feed.item.likes + 1
+
+                }
+            });
+            console.log(feed);
+        }
+
+    }
+    const carregaIcone = (likeada) => {
+        return likeada ? require("../../src/likeada.png") : require("../../src/like.png")
+    }
+
+    useEffect(() => {
+
+    }, [like]);
+
     return (
         <View style={styles.areaFeed}>
 
@@ -28,19 +76,24 @@ const Lista = ({ dataItem }) => {
                 }}
             />
             <View style={styles.areaButtons} >
-                <TouchableOpacity>
+                <TouchableOpacity onPress={like} >
                     <Image
-                        source={require("../../src/like.png")}
+
+                        source={carregaIcone(feed.item.likeada)}
                         style={styles.iconLike}
                     />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonSend}>
                     <Image
-                        source={require("../../src/send.png")}
+                        source={
+                            require("../../src/send.png")
+                        }
                         style={styles.iconLike}
                     />
                 </TouchableOpacity>
             </View>
+
+            {mostralikes(feed.item.likes)}
 
             <View style={styles.viewRodape}  >
                 <Text style={styles.nomeRodape}>{feed.item.nome}</Text>
@@ -57,7 +110,11 @@ const Lista = ({ dataItem }) => {
 export default Lista;
 
 const styles = StyleSheet.create({
-    descricao: { paddingLeft: 5, fontSize: 15, color: "#000" },
+    likes: {
+        fontWeight: "bold",
+        marginLeft: 5
+    },
+    descricao: { paddingLeft: 5, fontSize: 16, color: "#000" },
     viewRodape: {
 
         flexDirection: "row",
